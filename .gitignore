@@ -1,0 +1,4 @@
+dist/
+.sdk/
+__pycache__/
+*.pyc

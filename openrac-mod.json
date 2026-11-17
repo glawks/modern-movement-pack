@@ -1,0 +1,74 @@
+{
+  "format": 2,
+  "id": "equal-pack-jumps",
+  "name": "RAC3-Style Jumping (Experimental)",
+  "version": "0.2.0",
+  "author": "glawks",
+  "description": "RAC3-inspired RAC1 jump tuning: verified standing-jump height parameters, optional Heli/Thruster parity tweaks, and jump-height diagnostics.",
+  "license": "MIT",
+  "type": "script",
+  "api": "1.1",
+  "scripts": ["main.luau"],
+  "games": { "rac1": ["pal", "ntsc"] },
+  "multiplayer": "gameplay",
+  "settings": [
+    {
+      "key": "rac3_normal_jump",
+      "name": "RAC3-style standing jump",
+      "type": "bool",
+      "default": true,
+      "description": "Uses RAC3's documented short/held standing-jump targets (1.42 / 2.70 units); does not change running jumps."
+    },
+    {
+      "key": "thruster_high_jump",
+      "name": "Match Thruster high jump to Heli-Pack",
+      "type": "bool",
+      "default": true,
+      "description": "Experimental compensation for the Thruster-Pack's shorter high jump."
+    },
+    {
+      "key": "high_jump_bonus",
+      "name": "Thruster high-jump bonus",
+      "type": "float",
+      "default": 0.25,
+      "min": 0.0,
+      "max": 1.5,
+      "step": 0.05,
+      "description": "Extra target height for Thruster high jump, on top of the common adjustment. Tune using logs."
+    },
+    {
+      "key": "extra_high_jump",
+      "name": "Both packs: extra high-jump height",
+      "type": "float",
+      "default": 0.0,
+      "min": 0.0,
+      "max": 1.5,
+      "step": 0.05,
+      "description": "Optional additional high-jump height for both packs; no measured RAC3 high-jump target yet."
+    },
+    {
+      "key": "heli_double_jump",
+      "name": "Match Heli double jump to Thruster-Pack",
+      "type": "bool",
+      "default": true,
+      "description": "Experimental early-rise vertical boost based on RAC1 Thruster physics."
+    },
+    {
+      "key": "extra_double_jump",
+      "name": "Both packs: extra double-jump height",
+      "type": "float",
+      "default": 0.0,
+      "min": 0.0,
+      "max": 1.0,
+      "step": 0.05,
+      "description": "Optional common double-jump boost; leave at 0 until RAC3 height is measured."
+    },
+    {
+      "key": "log_jump_heights",
+      "name": "Log jump heights",
+      "type": "bool",
+      "default": true,
+      "description": "Report jump peaks for standing, running, high and double jumps; helpful for tuning."
+    }
+  ]
+}

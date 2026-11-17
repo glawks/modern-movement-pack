@@ -1,5 +1,5 @@
 -- Modern Movement Pack (Experimental) v0.3.0 - Ratchet & Clank 1, OpenRAC Luau.
--- Existing mod ID "equal-pack-jumps" retained for upgrades from v0.1.0.
+-- Mod ID: modern-movement-pack. No compatibility with pre-release prototypes required.
 -- All numbers are GAME units, NOT real-world metres.
 -- RAC3 normal standing-jump values are documented in OpenRAC/rac3-decomp.
 -- Other jump adjustments are experimental until measured against RAC3.

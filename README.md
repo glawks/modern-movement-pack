@@ -4,7 +4,7 @@
 
 > Development test build — no in-game validation yet. This does **not** recreate RAC2 or RAC3 physics exactly. Test with a backup save and enable this mod alone initially.
 
-**Upgrade compatibility:** the permanent OpenRAC mod ID is still `equal-pack-jumps`, inherited from Equal Pack Jumps v0.1.0. The display name is now **Modern Movement Pack (Experimental)**, so updates replace the previous jumping test mod. The GitHub repository URL is still `glawks/rac3-style-jumping`; this deliberately does not rename or merge GitHub repositories.
+**Identity:** the OpenRAC mod ID is `modern-movement-pack`. Early unpublished jumping prototypes used `equal-pack-jumps`, but no released-version compatibility is necessary. If you installed an older **test** ZIP, uninstall that prototype to avoid duplicate mod IDs and conflicting movement effects. The repository can be renamed from `glawks/rac3-style-jumping` to `glawks/modern-movement-pack` in GitHub **Settings → General → Repository name** without deleting history or branches; current links use the existing repository address until it is renamed.
 
 ## Movement options (new in v0.3.0)
 
@@ -35,8 +35,8 @@ Jump parameters aren't verified identical to RAC3 in-game. RAC1's level-specific
 ## Download and install the dev build
 
 1. Visit [Actions → build](https://github.com/glawks/rac3-style-jumping/actions/workflows/build.yml?query=branch%3Adev), choose the newest successful `dev` run.
-2. Under **Artifacts**, download the `rac3-style-jumping-*` artifact ZIP.
-3. Extract the artifact; install the inner `equal-pack-jumps-0.3.0.zip` through OpenRAC's launcher.
+2. Under **Artifacts**, download the `modern-movement-pack-*` artifact ZIP.
+3. Extract the artifact; install the inner `modern-movement-pack-0.3.0.zip` through OpenRAC's launcher.
 4. Restart RAC1 after changing any settings. Supports **PAL and NTSC-U**, and Luau runs on Windows, Linux, macOS and supported other OpenRAC platforms without native libraries.
 
 CI validates the manifest and creates the installable ZIP + SHA256SUMS on each `dev` push. Version tags (`v*`) are configured to publish public GitHub Releases. **No release tag has been made for v0.3.0.**

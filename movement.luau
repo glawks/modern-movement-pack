@@ -1,4 +1,4 @@
--- Modern Movement Pack v0.3.0: experimental RAC2/3-inspired responsiveness.
+-- Modern Movement Pack v0.3.1: experimental RAC2/3-inspired responsiveness.
 -- Separate Luau module; leaves v0.2.0 jumping code in main.luau unchanged.
 -- OpenRAC hooks are CHAINED: always call original() exactly once.
 -- No forced position/velocity changes, global gravity changes, or speed cap boosts.
@@ -121,5 +121,5 @@ openrac.on_frame(function()
     end
 end)
 
-openrac.log("Modern Movement Pack v0.3.0 movement module loaded; responsiveness tuning "
+openrac.log("Modern Movement Pack v0.3.1 movement module loaded; responsiveness tuning "
     .. (if enabled then "enabled" else "disabled"))

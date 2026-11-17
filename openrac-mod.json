@@ -2,7 +2,7 @@
   "format": 2,
   "id": "modern-movement-pack",
   "name": "Modern Movement Pack (Experimental)",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "author": "glawks",
   "description": "RAC2/3-inspired responsiveness and jump tuning for RAC1: adjustable acceleration, braking, ground/air turning and Heli/Thruster jump tweaks.",
   "license": "MIT",
@@ -76,7 +76,7 @@
       "name": "Log jump heights",
       "type": "bool",
       "default": true,
-      "description": "Report jump peaks for standing, running, high and double jumps; helpful for tuning."
+      "description": "Log completed ordinary jump rises only; interrupted jumps and grapples are ignored."
     },
     {
       "key": "movement_enabled",
@@ -132,5 +132,9 @@
       "default": false,
       "description": "Log once when each movement adjustment first activates for troubleshooting."
     }
+  ],
+  "hooks": [
+    "rac1.player.set_planar_velocity",
+    "rac1.player.turn_to_heading"
   ]
 }

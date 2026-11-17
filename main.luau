@@ -1,4 +1,4 @@
--- Modern Movement Pack (Experimental) v0.3.0 - Ratchet & Clank 1, OpenRAC Luau.
+-- Modern Movement Pack (Experimental) v0.3.1 - Ratchet & Clank 1, OpenRAC Luau.
 -- Mod ID: modern-movement-pack. No compatibility with pre-release prototypes required.
 -- All numbers are GAME units, NOT real-world metres.
 -- RAC3 normal standing-jump values are documented in OpenRAC/rac3-decomp.
@@ -110,14 +110,21 @@ local tracked = nil
 local last_state = -1
 local last_ticks = -1
 
-local function finish_track()
+-- Only a jump that ends in an ordinary landing can give a comparable peak.
+-- Interrupted measurements (double-jump transition, Swingshot, lifts, special
+-- moves, death/teleport, excessively long airborne travel) are discarded.
+-- Reported height is rise from first sampled frame, not a ground-level absolute.
+local function finish_track(landed)
     if tracked == nil then return end
-    if log_heights and tracked.frames > 3 and tracked.seen_air then
-        openrac.log(string.format(
-            "%s %s peak %.3f units (sampled from first frame, %d ticks, %s)",
-            tracked.pack, tracked.move, tracked.peak - tracked.start_z,
-            tracked.frames, tracked.tuning
-        ))
+    if landed and log_heights and tracked.frames > 3 and tracked.seen_air then
+        local rise = tracked.peak - tracked.start_z
+        if rise >= 0 and rise <= 5.5 then
+            openrac.log(string.format(
+                "%s %s completed rise %.3f units (first sampled frame, %d ticks, %s)",
+                tracked.pack, tracked.move, rise,
+                tracked.frames, tracked.tuning
+            ))
+        end
     end
     tracked = nil
 end
@@ -150,8 +157,10 @@ openrac.on_frame(function()
     local entered = state ~= last_state or (ticks >= 0 and last_ticks >= 0 and ticks < last_ticks)
 
     if entered and move ~= nil then
-        finish_track()
+        -- The old jump is not a complete, standalone jump if another starts.
+        finish_track(false)
         tracked = {
+            source_state = state,
             move = move,
             pack = pack_name(if valid_pack then pack_id else -1),
             start_z = z,
@@ -213,14 +222,23 @@ openrac.on_frame(function()
         end
     end
 
-    -- Keep measuring while the state changes to falling/gliding, until landing.
+    -- Follow the same jump into a normal falling/landing state only.
+    -- Other states include grapple, grind, swung/charged moves and other
+    -- traversal that invalidates the idea of a normal jump height.
     if tracked ~= nil then
-        tracked.frames += 1
-        if z > tracked.peak then tracked.peak = z end
-        local airborne_frames = r("u16", 0x30E)
-        if airborne_frames > 0 then tracked.seen_air = true end
-        if (tracked.seen_air and airborne_frames == 0) or tracked.frames >= 210 then
-            finish_track()
+        local expected = state == tracked.source_state or state == 0x06 or state == 0x08
+        if not expected then
+            finish_track(false)
+        else
+            tracked.frames += 1
+            if z > tracked.peak then tracked.peak = z end
+            local airborne_frames = r("u16", 0x30E)
+            if airborne_frames > 0 then tracked.seen_air = true end
+            if tracked.seen_air and airborne_frames == 0 then
+                finish_track(true)
+            elseif tracked.frames >= 135 or tracked.peak - tracked.start_z > 5.5 then
+                finish_track(false)
+            end
         end
     end
 
@@ -228,4 +246,4 @@ openrac.on_frame(function()
     last_ticks = ticks
 end)
 
-openrac.log("Modern Movement Pack v0.3.0 jump module loaded (experimental; jump-height logging optional)")
+openrac.log("Modern Movement Pack v0.3.1 jump module loaded (experimental; jump-height logging optional)")

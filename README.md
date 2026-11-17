@@ -1,12 +1,20 @@
-# Modern Movement Pack — OpenRAC RAC1 v0.3.0 (experimental)
+# Modern Movement Pack — OpenRAC RAC1 v0.3.1 (experimental)
 
 **RAC2/3-inspired movement responsiveness and RAC3-inspired jumping**, brought together in one optional, configurable quality-of-life mod for *Ratchet & Clank 1*.
 
 > Development test build — no in-game validation yet. This does **not** recreate RAC2 or RAC3 physics exactly. Test with a backup save and enable this mod alone initially.
 
-**Identity:** the OpenRAC mod ID is `modern-movement-pack`. Early unpublished jumping prototypes used `equal-pack-jumps`, but no released-version compatibility is necessary. If you installed an older **test** ZIP, uninstall that prototype to avoid duplicate mod IDs and conflicting movement effects. The repository can be renamed from `glawks/rac3-style-jumping` to `glawks/modern-movement-pack` in GitHub **Settings → General → Repository name** without deleting history or branches; current links use the existing repository address until it is renamed.
+**Identity:** the OpenRAC mod ID is `modern-movement-pack` in the [glawks/modern-movement-pack](https://github.com/glawks/modern-movement-pack) repository. Unreleased prototypes used `equal-pack-jumps`; uninstall those test versions before testing the current package, as OpenRAC treats them as separate mods.
 
-## Movement options (new in v0.3.0)
+## Fixes in v0.3.1
+
+- Declare both movement hooks in the manifest to prevent OpenRAC's undeclared-hook warnings.
+- Prevent false jump-height results when Ratchet changes into grappling or other non-jump states; only completed ordinary jumps are logged.
+- Limit jump-height measurements to plausible travel distances and reasonable frame counts. The old 12.168-unit / 210-tick running jump was a tracking artefact, not a RAC3 jump measurement.
+- Correct documentation links following the GitHub repository rename.
+- Movement physics/tuning values are unchanged from v0.3.0.
+
+## Movement options (new in v0.3.1)
 
 | Setting | Default | Behaviour |
 |---|---|---|
@@ -17,7 +25,7 @@
 | Faster air turns | 1.20× | Increases regular standing, running and double-jump turn cap; no jump-speed increase |
 | Movement diagnostics | Off | Logs first activation of each adjustment for troubleshooting |
 
-The movement logic operates **only on foot with normal gravity**. Ground speed tweaks exclude ice, wading, slipping and magnetic surfaces. It never changes Ratchet's maximum run speed, forcibly moves his position, or bypasses collision detection. Air speed is unchanged. Camera response and strafing are **not** implemented in v0.3.0.
+The movement logic operates **only on foot with normal gravity**. Ground speed tweaks exclude ice, wading, slipping and magnetic surfaces. It never changes Ratchet's maximum run speed, forcibly moves his position, or bypasses collision detection. Air speed is unchanged. Camera response and strafing are **not** implemented in v0.3.1.
 
 ## Jumping options (retained from v0.2.0)
 
@@ -28,18 +36,18 @@ The movement logic operates **only on foot with normal gravity**. Ground speed t
 | Extra high-jump height (both packs) | 0.00 | Optional height offset for tuning |
 | Heli double-jump parity | On | Experimental early-rise boost based on RAC1 Thruster behaviour |
 | Extra double-jump height (both packs) | 0.00 | Optional additional double-jump target-height boost |
-| Jump-height logging | On | Logs jump apex estimates for comparisons |
+| Jump-height logging | On | Logs sampled rise of completed standalone jumps; interrupted jumps and grapple traversal are discarded |
 
-Jump parameters aren't verified identical to RAC3 in-game. RAC1's level-specific movement, gravity and animations remain.
+Jump parameters aren't verified identical to RAC3 in-game. RAC1's level-specific movement, gravity and animations remain. For comparable peak readings, perform one standing/high/double jump on flat ground, land normally, and do not use Swingshot, grind rails, moving lifts or special moves. A double jump interrupts the first jump's individual measurement. Very long flights or an implausible rise over 5.5 game units are discarded by the logger.
 
 ## Download and install the dev build
 
-1. Visit [Actions → build](https://github.com/glawks/rac3-style-jumping/actions/workflows/build.yml?query=branch%3Adev), choose the newest successful `dev` run.
+1. Visit [Actions → build](https://github.com/glawks/modern-movement-pack/actions/workflows/build.yml?query=branch%3Adev), choose the newest successful `dev` run.
 2. Under **Artifacts**, download the `modern-movement-pack-*` artifact ZIP.
-3. Extract the artifact; install the inner `modern-movement-pack-0.3.0.zip` through OpenRAC's launcher.
+3. Extract the artifact; install the inner `modern-movement-pack-0.3.1.zip` through OpenRAC's launcher.
 4. Restart RAC1 after changing any settings. Supports **PAL and NTSC-U**, and Luau runs on Windows, Linux, macOS and supported other OpenRAC platforms without native libraries.
 
-CI validates the manifest and creates the installable ZIP + SHA256SUMS on each `dev` push. Version tags (`v*`) are configured to publish public GitHub Releases. **No release tag has been made for v0.3.0.**
+CI validates the manifest and creates the installable ZIP + SHA256SUMS on each `dev` push. Version tags (`v*`) are configured to publish public GitHub Releases. **No release tag has been made for v0.3.1.**
 
 ## Test checklist
 

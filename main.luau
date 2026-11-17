@@ -1,4 +1,4 @@
--- RAC3-Style Jumping (Experimental) v0.2.0 - Ratchet & Clank 1, OpenRAC Luau.
+-- Modern Movement Pack (Experimental) v0.3.0 - Ratchet & Clank 1, OpenRAC Luau.
 -- Existing mod ID "equal-pack-jumps" retained for upgrades from v0.1.0.
 -- All numbers are GAME units, NOT real-world metres.
 -- RAC3 normal standing-jump values are documented in OpenRAC/rac3-decomp.
@@ -9,7 +9,7 @@
 -- Do not blindly multiply gravity or write hero position.
 
 if openrac.game ~= "rac1" then
-    error("RAC3-Style Jumping only supports Ratchet & Clank 1")
+    error("Modern Movement Pack only supports Ratchet & Clank 1")
 end
 
 local hero = if openrac.version == "pal" then 0x0013F450 else 0x0013F350
@@ -228,4 +228,4 @@ openrac.on_frame(function()
     last_ticks = ticks
 end)
 
-openrac.log("RAC3-Style Jumping v0.2.0 loaded (experimental; jump-height logging optional)")
+openrac.log("Modern Movement Pack v0.3.0 jump module loaded (experimental; jump-height logging optional)")

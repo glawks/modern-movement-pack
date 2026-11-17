@@ -1,15 +1,23 @@
 {
   "format": 2,
   "id": "equal-pack-jumps",
-  "name": "RAC3-Style Jumping (Experimental)",
-  "version": "0.2.0",
+  "name": "Modern Movement Pack (Experimental)",
+  "version": "0.3.0",
   "author": "glawks",
-  "description": "RAC3-inspired RAC1 jump tuning: verified standing-jump height parameters, optional Heli/Thruster parity tweaks, and jump-height diagnostics.",
+  "description": "RAC2/3-inspired responsiveness and jump tuning for RAC1: adjustable acceleration, braking, ground/air turning and Heli/Thruster jump tweaks.",
   "license": "MIT",
   "type": "script",
   "api": "1.1",
-  "scripts": ["main.luau"],
-  "games": { "rac1": ["pal", "ntsc"] },
+  "scripts": [
+    "main.luau",
+    "movement.luau"
+  ],
+  "games": {
+    "rac1": [
+      "pal",
+      "ntsc"
+    ]
+  },
   "multiplayer": "gameplay",
   "settings": [
     {
@@ -31,7 +39,7 @@
       "name": "Thruster high-jump bonus",
       "type": "float",
       "default": 0.25,
-      "min": 0.0,
+      "min": 0,
       "max": 1.5,
       "step": 0.05,
       "description": "Extra target height for Thruster high jump, on top of the common adjustment. Tune using logs."
@@ -40,8 +48,8 @@
       "key": "extra_high_jump",
       "name": "Both packs: extra high-jump height",
       "type": "float",
-      "default": 0.0,
-      "min": 0.0,
+      "default": 0,
+      "min": 0,
       "max": 1.5,
       "step": 0.05,
       "description": "Optional additional high-jump height for both packs; no measured RAC3 high-jump target yet."
@@ -57,9 +65,9 @@
       "key": "extra_double_jump",
       "name": "Both packs: extra double-jump height",
       "type": "float",
-      "default": 0.0,
-      "min": 0.0,
-      "max": 1.0,
+      "default": 0,
+      "min": 0,
+      "max": 1,
       "step": 0.05,
       "description": "Optional common double-jump boost; leave at 0 until RAC3 height is measured."
     },
@@ -69,6 +77,60 @@
       "type": "bool",
       "default": true,
       "description": "Report jump peaks for standing, running, high and double jumps; helpful for tuning."
+    },
+    {
+      "key": "movement_enabled",
+      "name": "Modern movement",
+      "type": "bool",
+      "default": true,
+      "description": "Enable movement response changes (separate from the jump tuning settings)."
+    },
+    {
+      "key": "acceleration_response",
+      "name": "Faster acceleration",
+      "type": "float",
+      "default": 0.35,
+      "min": 0,
+      "max": 0.8,
+      "step": 0.05,
+      "description": "Extra fraction of the gap to the game's current run-speed target closed each movement call; 0 is original."
+    },
+    {
+      "key": "braking_response",
+      "name": "Faster braking",
+      "type": "float",
+      "default": 0.4,
+      "min": 0,
+      "max": 0.8,
+      "step": 0.05,
+      "description": "Extra fraction of the gap when slowing toward the game's target during running; 0 is original. Not the whole stop animation."
+    },
+    {
+      "key": "ground_turn_multiplier",
+      "name": "Faster ground turns",
+      "type": "float",
+      "default": 1.25,
+      "min": 1,
+      "max": 1.8,
+      "step": 0.05,
+      "description": "Scale running-state turn responsiveness without changing camera movement or top run speed."
+    },
+    {
+      "key": "air_turn_multiplier",
+      "name": "Faster air turns",
+      "type": "float",
+      "default": 1.2,
+      "min": 1,
+      "max": 1.6,
+      "step": 0.05,
+      "description": "Adjust the standard standing, running and double-jump air-turn cap. High jumps and long jumps retain their own mechanics."
+    },
+    {
+      "key": "log_movement",
+      "name": "Movement diagnostics",
+      "type": "bool",
+      "default": false,
+      "description": "Log once when each movement adjustment first activates for troubleshooting."
     }
   ]
 }

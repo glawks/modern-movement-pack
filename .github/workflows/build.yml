@@ -52,7 +52,7 @@ jobs:
           assert archive.is_file(), f"Missing {archive}"
           with zipfile.ZipFile(archive) as z:
               entries = set(z.namelist())
-              assert {'openrac-mod.json', 'main.luau', 'README.md', 'LICENSE'} <= entries, entries
+              assert {'openrac-mod.json', 'README.md', 'LICENSE', *manifest['scripts']} <= entries, entries
               assert json.loads(z.read('openrac-mod.json')) == manifest
               assert z.testzip() is None
           digest = hashlib.sha256(archive.read_bytes()).hexdigest()

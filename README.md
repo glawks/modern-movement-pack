@@ -1,54 +1,72 @@
-# RAC3-Style Jumping — OpenRAC RAC1 (experimental v0.2.0)
+# Modern Movement Pack — OpenRAC RAC1 v0.3.0 (experimental)
 
-Make *Ratchet & Clank 1* jumping closer to *Ratchet & Clank 3* without replacing Ratchet's animations, controls or movement system. **This is an untested development build.** Please use a backup/spare save for the first test.
+**RAC2/3-inspired movement responsiveness and RAC3-inspired jumping**, brought together in one optional, configurable quality-of-life mod for *Ratchet & Clank 1*.
 
-This is an **update** to *Equal Pack Jumps v0.1.0*: the permanent mod ID remains `equal-pack-jumps`, so it replaces the previous version rather than installing alongside it. The launcher display name is now **RAC3-Style Jumping (Experimental)**.
+> Development test build — no in-game validation yet. This does **not** recreate RAC2 or RAC3 physics exactly. Test with a backup save and enable this mod alone initially.
 
-## What it changes
+**Upgrade compatibility:** the permanent OpenRAC mod ID is still `equal-pack-jumps`, inherited from Equal Pack Jumps v0.1.0. The display name is now **Modern Movement Pack (Experimental)**, so updates replace the previous jumping test mod. The GitHub repository URL is still `glawks/rac3-style-jumping`; this deliberately does not rename or merge GitHub repositories.
 
-| Feature | Default | What it does |
+## Movement options (new in v0.3.0)
+
+| Setting | Default | Behaviour |
 |---|---|---|
-| **RAC3-style standing jump** | On | Sets a standing jump's short/full-held targets from RAC1's **1.47 / 2.62** to RAC3's documented **1.42 / 2.70** game units. No claim of identical trajectories. |
-| **Thruster high-jump parity** | On | An adjustable experimental **+0.25** high-jump target bonus on Thruster only. Designed to compensate for its lower jump relative to Heli; actual parity **not yet measured**. |
-| **Extra high jump (both packs)** | 0.00 | Optional common boost, independently adjustable. RAC3 high-jump height is not yet verified. |
-| **Heli double-jump parity** | On | Early-rise velocity adjustment approximating the Thruster's RAC1 double-jump behaviour. **Not an exact emulation** yet. |
-| **Extra double jump (both packs)** | 0.00 | Optional shared double-jump boost to dial in against measured RAC3 heights. |
-| **Jump-height logging** | On | Logs a standing, running, high or double jump's peak relative to its first sampled frame, for pack comparisons. |
+| Modern movement | On | Master toggle for the movement changes; independent of jumping |
+| Faster acceleration | 0.35 | Closes an extra 35% of the distance to the game's existing ground-speed target at the planar-velocity hook |
+| Faster braking | 0.40 | Closes an extra 40% when the ground-speed target is below the current speed **while running**; does not replace the stop animation |
+| Faster ground turns | 1.25× | Increases normal-run turn responsiveness and turn cap; not weapon/cutscene steering |
+| Faster air turns | 1.20× | Increases regular standing, running and double-jump turn cap; no jump-speed increase |
+| Movement diagnostics | Off | Logs first activation of each adjustment for troubleshooting |
 
-**Running jumps, long jumps, hover/glide, weapon fire, animations and input bindings are left unchanged.** RAC1's running-jump target is already 2.70 units; that is not proof it matches RAC3's running jump. All values here are gameplay units, not metres.
+The movement logic operates **only on foot with normal gravity**. Ground speed tweaks exclude ice, wading, slipping and magnetic surfaces. It never changes Ratchet's maximum run speed, forcibly moves his position, or bypasses collision detection. Air speed is unchanged. Camera response and strafing are **not** implemented in v0.3.0.
 
-## Install and download a dev build
+## Jumping options (retained from v0.2.0)
 
-1. Open the [dev Actions runs](https://github.com/glawks/rac3-style-jumping/actions/workflows/build.yml?query=branch%3Adev), select a successful build, and download its artifact under **Artifacts**. Extract the GitHub artifact and install the inner `equal-pack-jumps-0.2.0.zip` through the OpenRAC launcher.
-2. Enable **RAC3-Style Jumping (Experimental)** in RAC1, restart the game to apply settings, and load a **spare or backed-up save**.
-3. Supports **RAC1 PAL and NTSC-U**. This is a script mod: no Windows DLL or Linux/macOS build is needed.
+| Setting | Default | Behaviour |
+|---|---|---|
+| RAC3-style standing jump | On | RAC1 standing height targets 1.47/2.62 → documented RAC3 short/full-held 1.42/2.70 game units |
+| Thruster high-jump parity | On | Experimental +0.25 target-height compensation compared to Heli-Pack |
+| Extra high-jump height (both packs) | 0.00 | Optional height offset for tuning |
+| Heli double-jump parity | On | Experimental early-rise boost based on RAC1 Thruster behaviour |
+| Extra double-jump height (both packs) | 0.00 | Optional additional double-jump target-height boost |
+| Jump-height logging | On | Logs jump apex estimates for comparisons |
 
-On a later `v*` Git tag, CI will publish the mod ZIP and `SHA256SUMS` on a GitHub Release. No tag or public release is required to test `dev`.
+Jump parameters aren't verified identical to RAC3 in-game. RAC1's level-specific movement, gravity and animations remain.
 
-## Suggested test sequence
+## Download and install the dev build
 
-1. On flat ground with normal gravity, jump without Clank: tap **X** and then repeat holding **X**. Compare with the mod off to confirm the slight normal-jump change.
-2. Equip the **Heli-Pack** and do a stationary high jump (**R1 + X**) and double jump (**X, X**).
-3. Change to the **Thruster-Pack** and repeat the same moves in the same place, with the same jump-button timing.
-4. Check the OpenRAC game log for `RAC3-Style Jumping`, `high jump peak` and `double jump peak`. Share the lines and whether the packs feel equal.
-5. If needed, tune **Thruster high-jump bonus** by 0.05 increments. Extra common bonuses should stay 0 until a real RAC3 reference jump has been measured.
+1. Visit [Actions → build](https://github.com/glawks/rac3-style-jumping/actions/workflows/build.yml?query=branch%3Adev), choose the newest successful `dev` run.
+2. Under **Artifacts**, download the `rac3-style-jumping-*` artifact ZIP.
+3. Extract the artifact; install the inner `equal-pack-jumps-0.3.0.zip` through OpenRAC's launcher.
+4. Restart RAC1 after changing any settings. Supports **PAL and NTSC-U**, and Luau runs on Windows, Linux, macOS and supported other OpenRAC platforms without native libraries.
 
-The log's peak is sampled after the first frame of the new state, so it **slightly underestimates total jump rise**. It's meant for repeatable A/B comparisons, not a definitive physical measurement. Running speed, slopes, precise press timing and moving platforms all affect results.
+CI validates the manifest and creates the installable ZIP + SHA256SUMS on each `dev` push. Version tags (`v*`) are configured to publish public GitHub Releases. **No release tag has been made for v0.3.0.**
 
-If other movement mods are enabled, test this one **by itself first**, since all of them may modify the same state fields.
+## Test checklist
 
-## How it works
+- **Movement only:** disable all jump settings, keep Modern movement on. Compare walking/running from rest, releasing and reversing the stick, and turning through 180 degrees.
+- **Acceleration:** does Ratchet reach original top speed more promptly, without becoming faster at full speed?
+- **Braking:** compare sudden stick release and 180-degree reversals; the first revision only affects the normal-run speed target, so a stop state may remain unchanged.
+- **Ground turning:** change ground turn multiplier to 1.00 to compare with mod enabled/disabled.
+- **Air turning:** compare a normal standing or running jump at 1.00 and 1.20. High/long jumps are intentionally excluded.
+- **Jump heights:** repeat Heli-Pack and Thruster-Pack high/double jumps from the same flat location; report `peak` lines from the OpenRAC game log.
+- **Exclusions:** ice, underwater/swimming, combat, vehicles, magnetic walking, and ledge interactions should retain normal behaviour.
+- **Compatibility:** re-enable your other mods after standalone testing; turn off overlapping movement options if another mod changes those controls.
 
-OpenRAC 1.1 Luau script using `on_frame`, `read`, `write`, and `setting`. Version-specific RAM bases: PAL `0x0013F450`, NTSC-U `0x0013F350`. The script checks Ratchet is alive and on foot. It detects jump-state changes and adjusts initial jump-height fields (`+0x430`, `+0x488`, `+0x48C`) **only when the original values match expected retail baselines**. The Heli double-jump tweak affects early vertical velocity (`+0xE8`) during state `0xE`. There is no direct teleport, broad gravity multiplier, permanent save modification, or gameplay executable patch.
+Set **Movement diagnostics = On** if nothing visibly changes and send the OpenRAC log. It prints a one-time line for each movement adjustment successfully applied. Source-level packaging tests cannot confirm gameplay physics.
 
-**Unverified**: whether the post-tick application produces identical apex heights; whether parity settings work for every level/gravity type; interactions with other physics mods; and exact RAC3 high and double-jump target values. In-game tests are required before a public 1.0 release.
+## Technical details
 
-### Source references
+`main.luau` retains v0.2.0 jump tuning; `movement.luau` adds independent turn and speed hooks:
+- `rac1.player.set_planar_velocity`: adjusts `ground_speed` (+0x194) toward the game's existing `target_speed` (+0x190) during ordinary ground running. Preserves target speed bounds.
+- `rac1.player.turn_to_heading`: scales ordinary-run turn stiffness and maximum turn rate, then calls the original hook exactly once.
+- `on_frame`: updates `air_turn_rate` (+0x414) only on regular jumps with recognised baseline values.
 
-- [RAC1 jump baselines and states](https://github.com/lombyte-project/Lombyte/blob/main/src/overlays/l02/hero/hero_set_state.c)
-- [RAC1 hero memory layout](https://github.com/lombyte-project/Lombyte/blob/main/include/rnc/hero/hero.h)
-- [RAC1 vertical movement](https://github.com/OpenRAC/OpenRAC/blob/develop/port/game/rac1-pal/hand/level_hero_vertical.c)
-- [RAC3 standing-jump min/max values (documented hero layout)](https://github.com/OpenRAC/rac3-decomp/blob/master/include/structs/hero.h)
+**Known limitations:** animation transition times aren't changed; braking after entering the STOP state may be identical to retail; run turning may be constrained by animations; movement feel isn't quantitatively matched to RAC2/3; and game-level tests are required. No changes to camera or strafing yet.
+
+### Sources
+- [RAC1 movement and hero structure (Lombyte)](https://github.com/lombyte-project/Lombyte/blob/main/include/rnc/hero/hero.h)
+- [Ground speed and turning (Lombyte)](https://github.com/lombyte-project/Lombyte/blob/main/src/overlays/shared/hero/hero_switch_item.c)
 - [OpenRAC scripting API](https://github.com/OpenRAC/OpenRAC/blob/develop/sdk/docs/scripts.md)
+- [RAC3 jumping reference](https://github.com/OpenRAC/rac3-decomp/blob/master/include/structs/hero.h)
 
-MIT-licensed original mod code by glawks. No game assets included.
+MIT licensed original mod by glawks. No copyrighted game assets included.
